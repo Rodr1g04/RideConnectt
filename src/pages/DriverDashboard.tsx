@@ -1,12 +1,13 @@
-
 import { useState } from 'react';
-import { Copy, Share2, Calendar, Clock, Car, Users, CheckCircle } from 'lucide-react';
+import { Copy, Share2, Calendar, Clock, Car, Users, CheckCircle, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import DriverGroups from '@/components/DriverGroups';
 
 const DriverDashboard = () => {
   const [driverId] = useState('DRV-2024-8F3A');
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<'schedule' | 'groups'>('schedule');
 
   const upcomingRides = [
     {
@@ -76,125 +77,164 @@ const DriverDashboard = () => {
         </div>
       </header>
 
-      <div className="max-w-md mx-auto px-4 py-6 space-y-6">
-        {/* Driver ID Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center text-lg">
-              <Users className="w-5 h-5 mr-2 text-whatsapp" />
-              Seu ID de Motorista
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <div className="text-center">
-                <p className="text-2xl font-mono font-bold text-whatsapp mb-2">{driverId}</p>
-                <p className="text-sm text-gray-600">
-                  Compartilhe este ID com seus contatos para que possam agendar corridas
-                </p>
-              </div>
-            </div>
-            <div className="flex space-x-2">
-              <Button
-                onClick={copyDriverId}
-                variant="outline"
-                className="flex-1"
-                size="sm"
-              >
-                {copied ? <CheckCircle className="w-4 h-4 mr-1" /> : <Copy className="w-4 h-4 mr-1" />}
-                {copied ? 'Copiado!' : 'Copiar'}
-              </Button>
-              <Button
-                onClick={shareDriverId}
-                className="flex-1 whatsapp-gradient text-white"
-                size="sm"
-              >
-                <Share2 className="w-4 h-4 mr-1" />
-                Compartilhar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Tabs */}
+      <div className="max-w-md mx-auto px-4 py-4">
+        <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+          <button
+            onClick={() => setActiveTab('schedule')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              activeTab === 'schedule'
+                ? 'bg-white text-whatsapp shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Calendar className="w-4 h-4 inline mr-1" />
+            Agenda
+          </button>
+          <button
+            onClick={() => setActiveTab('groups')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              activeTab === 'groups'
+                ? 'bg-white text-whatsapp shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Users className="w-4 h-4 inline mr-1" />
+            Grupos
+          </button>
+        </div>
+      </div>
 
-        {/* Today's Schedule */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center text-lg">
-              <Clock className="w-5 h-5 mr-2 text-whatsapp" />
-              Agenda de Hoje
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {todaySchedule.map((slot) => (
-                <div
-                  key={slot.time}
-                  className={`flex items-center justify-between p-3 rounded-lg border ${
-                    slot.status === 'agendado' 
-                      ? 'bg-whatsapp/10 border-whatsapp/30' 
-                      : slot.status === 'bloqueado'
-                      ? 'bg-red-50 border-red-200'
-                      : 'bg-gray-50 border-gray-200'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-900 w-16">{slot.time}</span>
-                    <div className={`w-3 h-3 rounded-full ml-3 ${
-                      slot.status === 'agendado' 
-                        ? 'bg-whatsapp' 
-                        : slot.status === 'bloqueado'
-                        ? 'bg-red-500'
-                        : 'bg-gray-300'
-                    }`}></div>
-                  </div>
-                  <div className="text-right">
-                    {slot.status === 'agendado' && (
-                      <span className="text-sm text-whatsapp font-medium">{slot.passenger}</span>
-                    )}
-                    {slot.status === 'bloqueado' && (
-                      <span className="text-sm text-red-600">Bloqueado</span>
-                    )}
-                    {slot.status === 'livre' && (
-                      <span className="text-sm text-gray-500">Disponível</span>
-                    )}
+      <div className="max-w-md mx-auto px-4 pb-6 space-y-6">
+        {activeTab === 'schedule' && (
+          <>
+            {/* Driver ID Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Users className="w-5 h-5 mr-2 text-whatsapp" />
+                  Seu ID de Motorista
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-mono font-bold text-whatsapp mb-2">{driverId}</p>
+                    <p className="text-sm text-gray-600">
+                      Compartilhe este ID com seus contatos para que possam agendar corridas
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Upcoming Rides */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center text-lg">
-              <Calendar className="w-5 h-5 mr-2 text-whatsapp" />
-              Próximas Corridas
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {upcomingRides.map((ride) => (
-                <div key={ride.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">{ride.passenger}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      ride.status === 'confirmado' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {ride.status}
-                    </span>
-                  </div>
-                  <div className="space-y-1 text-sm text-gray-600">
-                    <p>📅 {new Date(ride.date).toLocaleDateString('pt-BR')} às {ride.time}</p>
-                    <p>📍 {ride.from} → {ride.to}</p>
-                  </div>
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={copyDriverId}
+                    variant="outline"
+                    className="flex-1"
+                    size="sm"
+                  >
+                    {copied ? <CheckCircle className="w-4 h-4 mr-1" /> : <Copy className="w-4 h-4 mr-1" />}
+                    {copied ? 'Copiado!' : 'Copiar'}
+                  </Button>
+                  <Button
+                    onClick={shareDriverId}
+                    className="flex-1 whatsapp-gradient text-white"
+                    size="sm"
+                  >
+                    <Share2 className="w-4 h-4 mr-1" />
+                    Compartilhar
+                  </Button>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+
+            {/* Today's Schedule */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Clock className="w-5 h-5 mr-2 text-whatsapp" />
+                  Agenda de Hoje
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {todaySchedule.map((slot) => (
+                    <div
+                      key={slot.time}
+                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                        slot.status === 'agendado' 
+                          ? 'bg-whatsapp/10 border-whatsapp/30' 
+                          : slot.status === 'bloqueado'
+                          ? 'bg-red-50 border-red-200'
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <span className="font-semibold text-gray-900 w-16">{slot.time}</span>
+                        <div className={`w-3 h-3 rounded-full ml-3 ${
+                          slot.status === 'agendado' 
+                            ? 'bg-whatsapp' 
+                            : slot.status === 'bloqueado'
+                            ? 'bg-red-500'
+                            : 'bg-gray-300'
+                        }`}></div>
+                      </div>
+                      <div className="text-right">
+                        {slot.status === 'agendado' && (
+                          <span className="text-sm text-whatsapp font-medium">{slot.passenger}</span>
+                        )}
+                        {slot.status === 'bloqueado' && (
+                          <span className="text-sm text-red-600">Bloqueado</span>
+                        )}
+                        {slot.status === 'livre' && (
+                          <span className="text-sm text-gray-500">Disponível</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Upcoming Rides */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Calendar className="w-5 h-5 mr-2 text-whatsapp" />
+                  Próximas Corridas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {upcomingRides.map((ride) => (
+                    <div key={ride.id} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900">{ride.passenger}</h3>
+                        <div className="flex items-center space-x-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            ride.status === 'confirmado' 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {ride.status}
+                          </span>
+                          <Button variant="ghost" size="sm">
+                            <MessageCircle className="w-4 h-4 text-whatsapp" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="space-y-1 text-sm text-gray-600">
+                        <p>📅 {new Date(ride.date).toLocaleDateString('pt-BR')} às {ride.time}</p>
+                        <p>📍 {ride.from} → {ride.to}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
+
+        {activeTab === 'groups' && <DriverGroups />}
       </div>
     </div>
   );

@@ -3,17 +3,10 @@ import { useState } from 'react';
 import { Calendar, Clock, Plus, Users, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import EnhancedScheduling from '@/components/EnhancedScheduling';
 
 const PassengerDashboard = () => {
   const [showScheduleForm, setShowScheduleForm] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [formData, setFormData] = useState({
-    from: '',
-    to: '',
-    time: ''
-  });
 
   const myRides = [
     {
@@ -23,7 +16,8 @@ const PassengerDashboard = () => {
       time: "14:00",
       from: "Centro",
       to: "Shopping",
-      status: "confirmado"
+      status: "confirmado",
+      estimatedPrice: 25.00
     }
   ];
 
@@ -35,18 +29,10 @@ const PassengerDashboard = () => {
     rating: 4.9
   };
 
-  // Horários disponíveis para o dia selecionado
-  const availableSlots = [
-    '08:00', '09:00', '10:00', '11:00', '12:00', 
-    '16:00', '17:00', '18:00', '19:00', '20:00'
-  ];
-
-  const handleSchedule = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Agendamento:', { ...formData, date: selectedDate });
+  const handleSchedule = (schedulingData: any) => {
+    console.log('Novo agendamento:', schedulingData);
     setShowScheduleForm(false);
-    setFormData({ from: '', to: '', time: '' });
-    setSelectedDate('');
+    // Aqui seria integrado com backend para salvar o agendamento
   };
 
   return (
@@ -123,6 +109,7 @@ const PassengerDashboard = () => {
                   <div className="space-y-1 text-sm text-gray-600">
                     <p>📅 {new Date(ride.date).toLocaleDateString('pt-BR')} às {ride.time}</p>
                     <p>📍 {ride.from} → {ride.to}</p>
+                    <p>💰 Estimado: R$ {ride.estimatedPrice.toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -131,102 +118,15 @@ const PassengerDashboard = () => {
         </Card>
       </div>
 
-      {/* Schedule Modal */}
+      {/* Enhanced Schedule Modal */}
       {showScheduleForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Agendar Corrida</h3>
-              
-              <form onSubmit={handleSchedule} className="space-y-4">
-                <div>
-                  <Label htmlFor="date">Data</Label>
-                  <Input
-                    id="date"
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
-                    required
-                    className="mt-1"
-                  />
-                </div>
-
-                {selectedDate && (
-                  <div>
-                    <Label>Horários Disponíveis</Label>
-                    <div className="grid grid-cols-3 gap-2 mt-2">
-                      {availableSlots.map((slot) => (
-                        <button
-                          key={slot}
-                          type="button"
-                          onClick={() => setFormData({...formData, time: slot})}
-                          className={`p-2 text-sm rounded border ${
-                            formData.time === slot
-                              ? 'bg-whatsapp text-white border-whatsapp'
-                              : 'bg-white text-gray-700 border-gray-300 hover:border-whatsapp'
-                          }`}
-                        >
-                          {slot}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div>
-                  <Label htmlFor="from">Origem</Label>
-                  <div className="relative mt-1">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      id="from"
-                      type="text"
-                      value={formData.from}
-                      onChange={(e) => setFormData({...formData, from: e.target.value})}
-                      placeholder="Local de origem"
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="to">Destino</Label>
-                  <div className="relative mt-1">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      id="to"
-                      type="text"
-                      value={formData.to}
-                      onChange={(e) => setFormData({...formData, to: e.target.value})}
-                      placeholder="Local de destino"
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-3 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setShowScheduleForm(false)}
-                    className="flex-1"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="flex-1 whatsapp-gradient text-white"
-                    disabled={!selectedDate || !formData.time}
-                  >
-                    Agendar
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <EnhancedScheduling
+          driverId={driverInfo.id}
+          driverName={driverInfo.name}
+          pricePerKm={driverInfo.pricePerKm}
+          onSchedule={handleSchedule}
+          onClose={() => setShowScheduleForm(false)}
+        />
       )}
     </div>
   );
