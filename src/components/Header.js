@@ -1,49 +1,53 @@
+
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import useAuth from '../hooks/useAuth';
 
 const Header = () => {
-  const navigation = useNavigation();
   const { logout } = useAuth();
 
   const handleLogout = async () => {
     const result = await logout();
     if (result.success) {
-      navigation.navigate('Auth', { screen: 'Home' });
+      // Para React web, podemos usar window.location ou react-router
+      window.location.href = '/';
     } else {
       alert('Erro ao fazer logout');
     }
   };
 
   return (
-    <View style={styles.header}>
-      <Text style={styles.title}>RideConnect</Text>
-      <TouchableOpacity onPress={handleLogout}>
-        <Text style={styles.logoutButton}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    <header style={styles.header}>
+      <h1 style={styles.title}>RideConnect</h1>
+      <button onClick={handleLogout} style={styles.logoutButton}>
+        Logout
+      </button>
+    </header>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   header: {
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    padding: '20px',
     backgroundColor: '#f0f0f0',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottom: '1px solid #ddd',
   },
   title: {
-    fontSize: 20,
+    fontSize: '20px',
     fontWeight: 'bold',
+    margin: 0,
   },
   logoutButton: {
     color: 'blue',
-    fontSize: 16,
+    fontSize: '16px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'underline',
   },
-});
+};
 
 export default Header;
