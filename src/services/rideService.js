@@ -1,52 +1,33 @@
 
 class RideService {
-  static async createRide(rideData) {
-    try {
-      console.log('Criando corrida:', rideData);
-      
-      // Simular delay de API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      return {
-        success: true,
-        ride: {
-          id: Date.now(),
-          ...rideData,
-          status: 'created',
-          createdAt: new Date()
-        }
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message
-      };
-    }
-  }
-
   static async getRides(userId) {
     try {
-      console.log('Buscando corridas para usuário:', userId);
+      console.log('Buscando corridas para o usuário:', userId);
       
-      // Simular dados de corridas
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Dados simulados de corridas
       const mockRides = [
         {
           id: 1,
-          passenger: "Maria Silva",
-          date: "2025-01-15",
-          time: "14:00",
-          from: "Centro",
-          to: "Shopping",
-          status: "confirmado"
+          userId: userId,
+          from: 'Centro',
+          to: 'Shopping',
+          date: '2024-01-15',
+          time: '14:00',
+          status: 'confirmado',
+          price: 25.00
         },
         {
           id: 2,
-          passenger: "João Costa",
-          date: "2025-01-16",
-          time: "09:00",
-          from: "Aeroporto",
-          to: "Hotel",
-          status: "pendente"
+          userId: userId,
+          from: 'Aeroporto',
+          to: 'Hotel',
+          date: '2024-01-16',
+          time: '09:00',
+          status: 'pendente',
+          price: 45.00
         }
       ];
       
@@ -62,16 +43,45 @@ class RideService {
     }
   }
 
+  static async createRide(rideData) {
+    try {
+      console.log('Criando nova corrida:', rideData);
+      
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const newRide = {
+        id: Date.now(),
+        ...rideData,
+        status: 'pendente',
+        createdAt: new Date().toISOString()
+      };
+      
+      return {
+        success: true,
+        ride: newRide
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
   static async updateRideStatus(rideId, status) {
     try {
       console.log('Atualizando status da corrida:', { rideId, status });
+      
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       return {
         success: true,
         ride: {
           id: rideId,
           status: status,
-          updatedAt: new Date()
+          updatedAt: new Date().toISOString()
         }
       };
     } catch (error) {
