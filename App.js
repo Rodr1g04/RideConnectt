@@ -1,9 +1,20 @@
 
 import React from 'react';
-import AppNavigator from './src/navigation/AppNavigator';
+import './App.css';
 
 const App = () => {
-  return <AppNavigator />;
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>RideConnect</h1>
+        <p>Bem-vindo ao RideConnect - Encontre caronas e compartilhe viagens!</p>
+        <div className="button-container">
+          <button className="btn-primary">Fazer Login</button>
+          <button className="btn-secondary">Cadastrar</button>
+        </div>
+      </header>
+    </div>
+  );
 };
 
 export default App;

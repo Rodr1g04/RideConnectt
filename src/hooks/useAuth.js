@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AuthService from '../services/authService';
 
 const useAuth = () => {

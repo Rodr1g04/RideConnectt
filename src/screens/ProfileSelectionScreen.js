@@ -1,128 +1,91 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 const ProfileSelectionScreen = () => {
-  const navigation = useNavigation();
+  const handleDriverSelect = () => {
+    console.log('Motorista selecionado');
+  };
+
+  const handlePassengerSelect = () => {
+    console.log('Passageiro selecionado');
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={require('../../assets/car-icon.png')}
-          style={styles.logo}
-        />
-        <Text style={styles.title}>RideConnect</Text>
-        <Text style={styles.subtitle}>Escolha seu tipo de perfil</Text>
-      </View>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h2 style={styles.title}>RideConnect</h2>
+        <p style={styles.subtitle}>Escolha seu tipo de perfil</p>
+      </div>
 
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.passengerButton]}
-          onPress={() => navigation.navigate('RegisterPassenger')}
-        >
-          <Image
-            source={require('../../assets/users-icon.png')}
-            style={styles.buttonIcon}
-          />
-          <View style={styles.buttonTextContainer}>
-            <Text style={styles.buttonTitle}>Sou Passageiro</Text>
-            <Text style={styles.buttonSubtitle}>Quero agendar corridas</Text>
-          </View>
-        </TouchableOpacity>
+      <div style={styles.buttonsContainer}>
+        <button style={styles.button} onClick={handlePassengerSelect}>
+          <div style={styles.buttonContent}>
+            <h3>Sou Passageiro</h3>
+            <p>Quero agendar corridas</p>
+          </div>
+        </button>
 
-        <TouchableOpacity
-          style={[styles.button, styles.driverButton]}
-          onPress={() => navigation.navigate('RegisterDriver')}
-        >
-          <Image
-            source={require('../../assets/car-icon.png')}
-            style={styles.buttonIcon}
-          />
-          <View style={styles.buttonTextContainer}>
-            <Text style={styles.buttonTitle}>Sou Motorista</Text>
-            <Text style={styles.buttonSubtitle}>Quero oferecer corridas</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        <button style={styles.button} onClick={handleDriverSelect}>
+          <div style={styles.buttonContent}>
+            <h3>Sou Motorista</h3>
+            <p>Quero oferecer corridas</p>
+          </div>
+        </button>
+      </div>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.loginLink}>Já tenho conta - Fazer Login</Text>
-      </TouchableOpacity>
-    </View>
+      <p style={styles.loginLink}>Já tenho conta - Fazer Login</p>
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
-    backgroundColor: '#f4f4f4',
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    minHeight: '100vh',
+    padding: '20px',
+    backgroundColor: '#f4f4f4',
   },
   header: {
-    alignItems: 'center',
-    marginBottom: 50,
-  },
-  logo: {
-    width: 80,
-    height: 80,
-    marginBottom: 10,
+    textAlign: 'center',
+    marginBottom: '50px',
   },
   title: {
-    fontSize: 28,
+    fontSize: '28px',
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 5,
+    marginBottom: '5px',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: '16px',
     color: '#777',
   },
   buttonsContainer: {
     width: '100%',
+    maxWidth: '400px',
   },
   button: {
-    flexDirection: 'row',
+    display: 'flex',
     alignItems: 'center',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
+    padding: '15px',
+    borderRadius: '10px',
+    marginBottom: '15px',
+    border: '2px solid #ddd',
+    backgroundColor: 'white',
+    cursor: 'pointer',
+    width: '100%',
   },
-  passengerButton: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#ddd',
-  },
-  driverButton: {
-    backgroundColor: '#5cb85c',
-  },
-  buttonIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 15,
-  },
-  buttonTextContainer: {
-    flex: 1,
-  },
-  buttonTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'left',
-  },
-  buttonSubtitle: {
-    fontSize: 14,
-    color: '#777',
+  buttonContent: {
     textAlign: 'left',
   },
   loginLink: {
     color: '#5cb85c',
-    marginTop: 20,
-    fontSize: 16,
+    marginTop: '20px',
+    fontSize: '16px',
+    cursor: 'pointer',
   },
-});
+};
 
 export default ProfileSelectionScreen;

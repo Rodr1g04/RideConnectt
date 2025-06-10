@@ -1,27 +1,27 @@
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
 const Header = ({ title }) => {
   return (
-    <View style={styles.header}>
-      <Text style={styles.title}>{title || 'RideConnect'}</Text>
-    </View>
+    <header style={styles.header}>
+      <h1 style={styles.title}>{title || 'RideConnect'}</h1>
+    </header>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   header: {
     backgroundColor: '#075E54',
-    padding: 20,
-    alignItems: 'center',
+    padding: '20px',
+    textAlign: 'center',
     width: '100%',
   },
   title: {
-    fontSize: 20,
+    fontSize: '20px',
     fontWeight: 'bold',
     color: 'white',
+    margin: 0,
   },
-});
+};
 
 export default Header;

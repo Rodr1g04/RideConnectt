@@ -1,65 +1,75 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const handleLogin = () => {
+    console.log('Navegar para Login');
+  };
+
+  const handleRegister = () => {
+    console.log('Navegar para Cadastro');
+  };
+
   return (
-    <View style={styles.container}>
+    <div style={styles.container}>
       <Header title="RideConnect" />
-      <Text style={styles.title}>Bem-vindo ao RideConnect!</Text>
-      <Text style={styles.subtitle}>Encontre caronas e compartilhe viagens.</Text>
+      <div style={styles.content}>
+        <h2 style={styles.title}>Bem-vindo ao RideConnect!</h2>
+        <p style={styles.subtitle}>Encontre caronas e compartilhe viagens.</p>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Login')}
-      >
-        <Text style={styles.buttonText}>Fazer Login</Text>
-      </TouchableOpacity>
+        <button style={styles.button} onClick={handleLogin}>
+          Fazer Login
+        </button>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('ProfileSelection')}
-      >
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
-    </View>
+        <button style={styles.button} onClick={handleRegister}>
+          Cadastrar
+        </button>
+      </div>
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
+    padding: '20px',
   },
   title: {
-    fontSize: 24,
+    fontSize: '24px',
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: '10px',
     color: '#4a4a4a',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: '16px',
     color: '#777',
-    marginBottom: 20,
+    marginBottom: '20px',
     textAlign: 'center',
   },
   button: {
     backgroundColor: '#25D366',
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 5,
-    marginTop: 15,
-  },
-  buttonText: {
     color: '#fff',
-    fontSize: 16,
+    padding: '12px 25px',
+    border: 'none',
+    borderRadius: '5px',
+    margin: '15px 0',
+    fontSize: '16px',
     fontWeight: 'bold',
-    textAlign: 'center',
+    cursor: 'pointer',
+    minWidth: '200px',
   },
-});
+};
 
 export default HomeScreen;

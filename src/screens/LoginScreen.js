@@ -1,114 +1,117 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import useAuth from '../hooks/useAuth';
 
-const LoginScreen = ({ navigation }) => {
-  const { login, loading } = useAuth();
+const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userType, setUserType] = useState('passenger');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!phoneNumber) {
-      Alert.alert('Erro', 'Por favor, insira seu número de telefone.');
+      alert('Por favor, insira seu número de telefone.');
       return;
     }
 
-    const result = await login(phoneNumber, userType);
-    if (result.success) {
-      // Navegar para a dashboard correta após o login
-      if (userType === 'driver') {
-        navigation.navigate('App', { screen: 'DriverDashboard' });
-      } else {
-        navigation.navigate('App', { screen: 'PassengerDashboard' });
-      }
-    } else {
-      Alert.alert('Erro ao fazer login', result.error || 'Erro desconhecido');
-    }
+    setLoading(true);
+    // Simular login
+    setTimeout(() => {
+      console.log('Login realizado:', { phoneNumber, userType });
+      setLoading(false);
+    }, 1000);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
+    <div style={styles.container}>
+      <h2 style={styles.title}>Login</h2>
+      
+      <input
         style={styles.input}
+        type="tel"
         placeholder="Número de Telefone"
         value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="phone-pad"
+        onChange={(e) => setPhoneNumber(e.target.value)}
       />
-      <View style={styles.radioContainer}>
-        <TouchableOpacity
-          style={[styles.radio, userType === 'passenger' && styles.radioSelected]}
-          onPress={() => setUserType('passenger')}
-        >
-          <Text style={userType === 'passenger' && styles.radioTextSelected}>Passageiro</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.radio, userType === 'driver' && styles.radioSelected]}
-          onPress={() => setUserType('driver')}
-        >
-          <Text style={userType === 'driver' && styles.radioTextSelected}>Motorista</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? 'Carregando...' : 'Entrar'}</Text>
-      </TouchableOpacity>
-    </View>
+      
+      <div style={styles.radioContainer}>
+        <label style={styles.radioLabel}>
+          <input
+            type="radio"
+            value="passenger"
+            checked={userType === 'passenger'}
+            onChange={(e) => setUserType(e.target.value)}
+          />
+          Passageiro
+        </label>
+        <label style={styles.radioLabel}>
+          <input
+            type="radio"
+            value="driver"
+            checked={userType === 'driver'}
+            onChange={(e) => setUserType(e.target.value)}
+          />
+          Motorista
+        </label>
+      </div>
+      
+      <button 
+        style={styles.button} 
+        onClick={handleLogin} 
+        disabled={loading}
+      >
+        {loading ? 'Carregando...' : 'Entrar'}
+      </button>
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
+    minHeight: '100vh',
+    padding: '20px',
     backgroundColor: '#f0f0f0',
   },
   title: {
-    fontSize: 24,
+    fontSize: '24px',
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: '20px',
     textAlign: 'center',
   },
   input: {
     backgroundColor: 'white',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 8,
-    fontSize: 16,
+    padding: '15px',
+    marginBottom: '10px',
+    borderRadius: '8px',
+    border: '1px solid #ddd',
+    fontSize: '16px',
+    width: '300px',
   },
   radioContainer: {
-    flexDirection: 'row',
+    display: 'flex',
     justifyContent: 'space-around',
-    marginBottom: 20,
+    width: '300px',
+    marginBottom: '20px',
   },
-  radio: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 10,
-    borderRadius: 8,
-    width: '40%',
+  radioLabel: {
+    display: 'flex',
     alignItems: 'center',
-  },
-  radioSelected: {
-    backgroundColor: '#075E54',
-    borderColor: '#075E54',
-  },
-  radioTextSelected: {
-    color: 'white',
+    padding: '10px',
+    cursor: 'pointer',
   },
   button: {
     backgroundColor: '#075E54',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
     color: 'white',
-    fontSize: 18,
+    padding: '15px',
+    borderRadius: '8px',
+    border: 'none',
+    fontSize: '18px',
     fontWeight: 'bold',
+    cursor: 'pointer',
+    width: '300px',
   },
-});
+};
 
 export default LoginScreen;
