@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userType, setUserType] = useState('passenger');
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,13 @@ const LoginScreen = () => {
     setTimeout(() => {
       console.log('Login realizado:', { phoneNumber, userType });
       setLoading(false);
+      
+      // Navegar para o dashboard correto
+      if (userType === 'driver') {
+        navigate('/driver-dashboard');
+      } else {
+        navigate('/passenger-dashboard');
+      }
     }, 1000);
   };
 

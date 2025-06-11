@@ -1,13 +1,22 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileSelectionScreen = () => {
+  const navigate = useNavigate();
+
   const handleDriverSelect = () => {
     console.log('Motorista selecionado');
+    navigate('/driver-dashboard');
   };
 
   const handlePassengerSelect = () => {
     console.log('Passageiro selecionado');
+    navigate('/passenger-dashboard');
+  };
+
+  const handleLoginLink = () => {
+    navigate('/login');
   };
 
   return (
@@ -33,7 +42,9 @@ const ProfileSelectionScreen = () => {
         </button>
       </div>
 
-      <p style={styles.loginLink}>Já tenho conta - Fazer Login</p>
+      <p style={styles.loginLink} onClick={handleLoginLink}>
+        Já tenho conta - Fazer Login
+      </p>
     </div>
   );
 };

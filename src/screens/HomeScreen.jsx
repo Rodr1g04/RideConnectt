@@ -1,14 +1,58 @@
-
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 
 const HomeScreen = () => {
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    console.log('Navegar para Login');
+    navigate('/login');
   };
 
   const handleRegister = () => {
-    console.log('Navegar para Cadastro');
+    navigate('/profile-selection');
+  };
+
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+      backgroundColor: '#fff',
+      alignItems: 'center',
+    },
+    content: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+    },
+    title: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      marginBottom: '10px',
+      color: '#4a4a4a',
+    },
+    subtitle: {
+      fontSize: '16px',
+      color: '#777',
+      marginBottom: '20px',
+      textAlign: 'center',
+    },
+    button: {
+      backgroundColor: '#25D366',
+      color: '#fff',
+      padding: '12px 25px',
+      border: 'none',
+      borderRadius: '5px',
+      margin: '15px 0',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      minWidth: '200px',
+    },
   };
 
   return (
